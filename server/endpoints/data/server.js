@@ -4,25 +4,21 @@ var fetch = require('node-fetch');
 var fs = require('fs')
 var express = require('express');
 var router = express.Router();
+var querystring = require('querystring');
+
+var data = JSON.parse(fs.readFileSync('./data/nyc.json'));
 
 router.get('/', function(req, res, next) {
-  let endpoint = 'https://pbortnick.github.io/server/data/nyc.json';
-
-  fetch(endpoint).then(function(res) {
-    return res.json();
-  }).then(function(json) {
-    res.json(json)
-  });
+  return res.json(data)
 });
 
 router.get('/set', async (req, res, next) => {
-  var data = JSON.parse(fs.readFileSync('./data/nyc.json'));
-  console.log(req.query.hood, req.query.coords)
   var hood = req.query.hood
-  var coords = req.query.coords
+  var coords = JSON.parse("[" + req.query.coords.split()[0] + "]")
+  var coordsUse = [...coords[0], coords[0][0]]
   data.features.map((target) => {
     if (target.properties.Name === hood) {
-      target.geometry.coordinates = coords
+      target.geometry.coordinates = [coordsUse]
     }
   })
 

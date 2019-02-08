@@ -17,9 +17,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../client/build')));
 
-// listings db
-var expressMongoDb = require('express-mongo-db');
-app.use(expressMongoDb('mongodb://pamela:LgfMap1@ds227255.mlab.com:27255/mapdata'));
 
 // endpoints
 var index = require('./endpoints/index/server');

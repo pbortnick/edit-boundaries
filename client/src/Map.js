@@ -15,7 +15,7 @@ class Map extends Component {
       hood: this.state.currentHood
     }
 
-    fetch('/data/set?hood=' + data.hood + '&coords=' + data.coords)
+    fetch('/data/set?hood=' + data.hood + '&coords=' + JSON.stringify(data.coords))
     .then(res => res.json())
     .then(response => {
       if (response.success) {
@@ -73,8 +73,10 @@ class Map extends Component {
       nowEditingShape.setMap(map);
       nowEditingShape.addListener('mouseup', function() {
         var newShape = []
-        this.getPaths().getArray()[0].forEach(coord => {newShape.push(coord.lng(), coord.lat())})
+        this.getPaths().getArray()[0].forEach(coord => {newShape.push([coord.lng(), coord.lat()])})
         t.setState({ setCoords: newShape })
+
+        console.log(newShape)
       })
     });
   }
