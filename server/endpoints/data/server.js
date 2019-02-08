@@ -6,7 +6,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
-  let endpoint = 'https://pbortnick.github.io/data/nyc.json';
+  let endpoint = 'https://pbortnick.github.io/server/data/nyc.json';
 
   fetch(endpoint).then(function(res) {
     return res.json();
@@ -17,9 +17,12 @@ router.get('/', function(req, res, next) {
 
 router.get('/set', async (req, res, next) => {
   var data = JSON.parse(fs.readFileSync('./data/nyc.json'));
+  console.log(req)
+  var hood = req.hood
+  var coords = req.coords
   var updatedData = await data.features.map((target) => {
-    if (target.properties.name === req.hood) {
-      target.geometry.coordinates = req.coords
+    if (target.properties.name === hood) {
+      target.geometry.coordinates = coords
     }
   })
 
