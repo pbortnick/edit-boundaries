@@ -17,16 +17,16 @@ router.get('/', function(req, res, next) {
 
 router.get('/set', async (req, res, next) => {
   var data = JSON.parse(fs.readFileSync('./data/nyc.json'));
-  console.log(req)
-  var hood = req.hood
-  var coords = req.coords
-  var updatedData = await data.features.map((target) => {
-    if (target.properties.name === hood) {
+  console.log(req.query.hood, req.query.coords)
+  var hood = req.query.hood
+  var coords = req.query.coords
+  data.features.map((target) => {
+    if (target.properties.Name === hood) {
       target.geometry.coordinates = coords
     }
   })
 
-  await fs.writeFileSync('./data/nyc.json', JSON.stringify(updatedData));
+  await fs.writeFileSync('./data/nyc.json', JSON.stringify(data));
 
   return res.json({
     success: true,
